@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'ios/**'
+      - '.github/workflows/build-ios.yml'
   workflow_dispatch:
 
 jobs:
@@ -17,6 +18,12 @@ jobs:
         run: |
           brew install xcodegen go
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+
+      - name: Validate & normalize Info.plist and entitlements
+        working-directory: ios
+        run: |
+          plutil -convert xml1 MLMVPNApp/Info.plist MLMVPNTunnel/Info.plist MLMVPNApp/MLMVPNApp.entitlements MLMVPNTunnel/MLMVPNTunnel.entitlements
+          plutil -lint MLMVPNApp/Info.plist MLMVPNTunnel/Info.plist
 
       - name: Build Libbox.xcframework
         working-directory: ios

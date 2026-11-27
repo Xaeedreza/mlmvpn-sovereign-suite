@@ -23,8 +23,13 @@ targets:
     platform: iOS
     sources:
       - path: MLMVPNApp
+        excludes:
+          - "Info.plist"
+          - "*.entitlements"
       - path: Shared
       - path: Resources
+        excludes:
+          - "*.plist"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.mlmvpn.sovereign.app
@@ -43,6 +48,9 @@ targets:
     platform: iOS
     sources:
       - path: MLMVPNTunnel
+        excludes:
+          - "Info.plist"
+          - "*.entitlements"
       - path: Shared
     settings:
       base:
