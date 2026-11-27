@@ -1,0 +1,331 @@
+/* =====================================================================
+   MLMVPN Sovereign — Warm Velvet Amber & Rose-Gold Design System
+   ---------------------------------------------------------------------
+   Loaded after ui/tokens.css & ui/shell.css.
+   Establishes a warm, sensual obsidian-espresso & rose-amber palette
+   with engineered glass surfaces, telemetry orbs, and tactile capsules.
+   ===================================================================== */
+
+:root,
+html[data-appearance="dark"] {
+  --mv-desk: #110A0C;
+  --mv-window: #1E1317;
+  --mv-surface: #170F12;
+  --mv-surface-2: #211519;
+  --mv-surface-3: #2B1B21;
+  --mv-surface-4: #362229;
+
+  --mv-label: rgba(255, 245, 238, 0.94);
+  --mv-label-2: rgba(255, 224, 206, 0.68);
+  --mv-label-3: rgba(255, 208, 186, 0.44);
+  --mv-label-4: rgba(255, 198, 174, 0.25);
+
+  --mv-fill: rgba(255, 196, 168, 0.065);
+  --mv-fill-2: rgba(255, 184, 152, 0.11);
+  --mv-fill-3: rgba(255, 172, 138, 0.17);
+  --mv-sep: rgba(255, 196, 170, 0.09);
+  --mv-sep-2: rgba(255, 196, 170, 0.17);
+  --mv-sep-3: rgba(255, 196, 170, 0.28);
+
+  /* Signature Warm Molten Amber-Rose Accent */
+  --mv-accent: #FF6B4A;
+  --mv-accent-2: #FF8A5C;
+  --mv-accent-soft: rgba(255, 107, 74, 0.20);
+  --mv-accent-ring: rgba(255, 122, 89, 0.48);
+  --mv-accent-rgb: 255, 107, 74;
+  --mv-on-accent: #FFF9F5;
+
+  --mv-blue: #FF7E5F;
+  --mv-green: #34D399;
+  --mv-orange: #F59E0B;
+  --mv-red: #FB7185;
+  --mv-yellow: #FBBF24;
+  --mv-teal: #38BDF8;
+  --mv-indigo: #C084FC;
+  --mv-purple: #E879F9;
+  --mv-pink: #F43F5E;
+  --mv-gray: #A8969A;
+
+  --mv-green-ink: #4ADE80;
+  --mv-orange-ink: #FBBF24;
+  --mv-red-ink: #FDA4AF;
+  --mv-yellow-ink: #FDE047;
+  --mv-teal-ink: #7DD3FC;
+  --mv-purple-ink: #F0ABFC;
+  --mv-blue-ink: #FFA082;
+  --mv-indigo-ink: #D8B4FE;
+  --mv-pink-ink: #FB7185;
+
+  --mv-mat-thin: rgba(34, 21, 26, 0.78);
+  --mv-mat-regular: rgba(27, 17, 21, 0.84);
+  --mv-mat-thick: rgba(20, 12, 16, 0.56);
+
+  --mv-pane: #1B1115;
+  --mv-group: rgba(10, 5, 7, 0.26);
+  --mv-group-edge: rgba(255, 194, 164, 0.08);
+  --mv-group-sep: rgba(255, 194, 164, 0.08);
+  --mv-side: rgba(255, 198, 172, 0.055);
+  --mv-side-edge: rgba(255, 206, 182, 0.12);
+  --mv-glass-btn: rgba(255, 196, 170, 0.095);
+  --mv-field: rgba(8, 4, 6, 0.34);
+  --mv-code: #1E1317;
+}
+
+html[data-appearance="light"] {
+  --mv-desk: #F8F1ED;
+  --mv-window: #FFF9F6;
+  --mv-surface: #FFFFFF;
+  --mv-surface-2: #FDF4F0;
+  --mv-surface-3: #F7E9E2;
+  --mv-surface-4: #EFE0D8;
+  --mv-accent: #E11D48;
+  --mv-accent-2: #BE123C;
+  --mv-accent-soft: rgba(225, 29, 72, 0.12);
+  --mv-accent-ring: rgba(225, 29, 72, 0.32);
+  --mv-accent-rgb: 225, 29, 72;
+  --mv-pane: #FFFDFB;
+  --mv-group: rgba(180, 90, 60, 0.045);
+  --mv-side: rgba(255, 245, 240, 0.86);
+}
+
+/* Warm Velvet Wallpaper Override when default dusk/mountain is active */
+.mv-wallpaper {
+  background: radial-gradient(circle at 22% 18%, rgba(244, 63, 94, 0.34), transparent 52%),
+              radial-gradient(circle at 80% 24%, rgba(245, 158, 11, 0.28), transparent 48%),
+              radial-gradient(circle at 52% 88%, rgba(168, 85, 247, 0.22), transparent 55%),
+              linear-gradient(155deg, #160B10 0%, #241219 48%, #12090D 100%) !important;
+}
+
+html[data-appearance="light"] .mv-wallpaper {
+  background: radial-gradient(circle at 22% 18%, rgba(251, 113, 133, 0.30), transparent 52%),
+              radial-gradient(circle at 80% 24%, rgba(251, 191, 36, 0.28), transparent 48%),
+              linear-gradient(155deg, #FFF5F0 0%, #FDE8E0 50%, #F6D8D0 100%) !important;
+}
+
+/* Engineered Quick Action Strip on Desktop Home */
+.sv-quick-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  width: min(100%, 760px);
+  margin: 18px auto 6px;
+}
+
+.sv-hero-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 200, 174, 0.16);
+  background: linear-gradient(135deg, rgba(36, 20, 25, 0.82), rgba(22, 12, 16, 0.72));
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  color: #FFF7F2;
+  cursor: pointer;
+  text-align: start;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 224, 204, 0.14);
+  transition: transform 180ms cubic-bezier(.2, .8, .2, 1), border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.sv-hero-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 138, 92, 0.55);
+  box-shadow: 0 14px 36px rgba(244, 63, 94, 0.18), inset 0 1px 0 rgba(255, 224, 204, 0.22);
+}
+
+.sv-hero-pill:active {
+  transform: scale(0.98);
+}
+
+.sv-hero-pill .sv-pill-orb {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  font-size: 18px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--sv-a, #FF6B4A), var(--sv-b, #F43F5E));
+  box-shadow: 0 6px 16px rgba(244, 63, 94, 0.28);
+}
+
+.sv-hero-pill b {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.sv-hero-pill small {
+  display: block;
+  font-size: 11px;
+  color: rgba(255, 220, 200, 0.68);
+  margin-top: 2px;
+}
+
+.sv-hero-pill .sv-pill-badge {
+  margin-inline-start: auto;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 232, 220, 0.85);
+}
+
+.sv-hero-pill.is-live {
+  border-color: rgba(52, 211, 153, 0.55);
+  box-shadow: 0 12px 32px rgba(52, 211, 153, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.sv-hero-pill.is-live .sv-pill-badge {
+  background: rgba(52, 211, 153, 0.18);
+  color: #6EE7B7;
+}
+
+/* Engineered Telemetry Orb for Sovereign Panels */
+.sv-orb-card {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid var(--mv-sep-2);
+  background: radial-gradient(circle at 85% 20%, rgba(255, 107, 74, 0.16), transparent 55%),
+              radial-gradient(circle at 15% 80%, rgba(245, 158, 11, 0.12), transparent 50%),
+              var(--mv-surface-2);
+  box-shadow: var(--mv-e2);
+}
+
+.sv-orb-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sv-orb-btn {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: #FFF;
+  font-size: 24px;
+  background: linear-gradient(145deg, #FF7E5F, #E11D48);
+  box-shadow: 0 10px 28px rgba(225, 29, 72, 0.38), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: transform 200ms cubic-bezier(.2, .8, .2, 1), box-shadow 200ms ease, background 200ms ease;
+}
+
+.sv-orb-btn::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 126, 95, 0.38);
+  pointer-events: none;
+}
+
+.sv-orb-btn:hover {
+  transform: scale(1.04);
+}
+
+.sv-orb-btn:active {
+  transform: scale(0.95);
+}
+
+.sv-orb-btn.is-on {
+  background: linear-gradient(145deg, #10B981, #059669);
+  box-shadow: 0 10px 28px rgba(16, 185, 129, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.sv-orb-btn.is-on::after {
+  border-color: rgba(52, 211, 153, 0.55);
+  animation: sv-pulse 2.2s infinite ease-in-out;
+}
+
+@keyframes sv-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.12); opacity: 0.15; }
+}
+
+.sv-btn-warm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 15px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #FFF9F5;
+  background: linear-gradient(135deg, #FF7E5F, #E11D48);
+  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.25);
+  transition: transform 140ms ease, filter 140ms ease;
+}
+
+.sv-btn-warm:hover { filter: brightness(1.07); transform: translateY(-1px); }
+.sv-btn-warm:active { transform: scale(0.97); }
+.sv-btn-warm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.sv-btn-soft {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--mv-sep-2);
+  background: var(--mv-fill);
+  color: var(--mv-label);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.sv-btn-soft:hover {
+  background: var(--mv-fill-2);
+  border-color: var(--mv-accent-ring);
+}
+
+.sv-stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.sv-stat-box {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--mv-group);
+  border: 1px solid var(--mv-group-edge);
+}
+
+.sv-stat-box small {
+  display: block;
+  font-size: 11px;
+  color: var(--mv-label-3);
+}
+
+.sv-stat-box b {
+  display: block;
+  margin-top: 3px;
+  font-size: 14px;
+  font-family: var(--mv-font-tech);
+  color: var(--mv-label);
+}
