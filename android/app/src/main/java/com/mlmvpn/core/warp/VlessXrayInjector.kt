@@ -125,7 +125,12 @@ internal class LocalXrayCore(private val fd: Int, private val onLog: ((String) -
     /** Down plus up through [tag] since the last read (the core resets its counters on a read). */
     fun traffic(tag: String): Long {
         val c = controller ?: return 0L
-        return runCatching { c.queryStats(tag, "downlink") + c.queryStats(tag, "uplink") }.getOrDefault(0L)
+        return runCatching {
+            val m = c.javaClass.getMethod("queryStats", String::class.java, String::class.java)
+            val down = (m.invoke(c, tag, "downlink") as? Number)?.toLong() ?: 0L
+            val up = (m.invoke(c, tag, "uplink") as? Number)?.toLong() ?: 0L
+            down + up
+        }.getOrDefault(0L)
     }
 }
 
