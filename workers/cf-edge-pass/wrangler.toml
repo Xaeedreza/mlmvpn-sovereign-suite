@@ -1,0 +1,17 @@
+name = "mlmvpn-cf-edge-pass"
+main = "worker.js"
+compatibility_date = "2025-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+DEFAULT_REGION = "AE"
+
+# Optional KV namespace for cross-device Sovereign Sync (/sync/push & /sync/pull):
+# [[kv_namespaces]]
+# binding = "SYNC_KV"
+# id = "YOUR_KV_NAMESPACE_ID"
+
+# Set secrets via Wrangler or MLMVPN Sovereign Cloud UI:
+# wrangler secret put UUID
+# wrangler secret put PASS_KEY
+# wrangler secret put PROXY_IP

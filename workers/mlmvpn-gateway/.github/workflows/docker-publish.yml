@@ -1,0 +1,41 @@
+# Builds the X4G Docker image and publishes it to GitHub Container Registry (ghcr.io)
+# on every push to main. The resulting image is what the Windows app tells Railway to
+# deploy, so it MUST be public (see the note at the bottom).
+name: Publish X4G image
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:   # lets you run it manually from the Actions tab
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write        # required to push to ghcr.io
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          # Image name is derived from the repo owner, lowercased, so it works for any
+          # account/org that hosts this repo.
+          tags: ghcr.io/${{ github.repository_owner }}/mlmvpn-gateway:latest
+
+# AFTER the first successful run:
+#   1) Open your GitHub profile → Packages → "x4g".
+#   2) Package settings → Danger Zone → "Change visibility" → Public.
+#      (Railway pulls it anonymously, so it must be Public.)
+#   The final image tag is:  ghcr.io/<your-username-lowercase>/mlmvpn-gateway:latest

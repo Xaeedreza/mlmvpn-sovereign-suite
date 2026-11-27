@@ -1,0 +1,18 @@
+# تولیدشده توسط install.php — حاوی رمز دیتابیس و کلید امنیتی سایت است، هرگز نباید commit شود
+config.php
+
+# فایل‌های نشانهٔ اجرای یک‌بارهٔ مهاجرت اسکیما (به‌صورت خودکار روی هر نصب دوباره ساخته می‌شوند)
+includes/.schema_v2
+includes/.schema_v3
+includes/.schema_v4
+includes/.schema_v5
+
+# نسخهٔ کش دارایی‌ها (با دکمهٔ «پاک‌کردن کش» ساخته/به‌روز می‌شود)
+includes/asset_version.txt
+
+# سیستم‌عامل / ادیتور
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

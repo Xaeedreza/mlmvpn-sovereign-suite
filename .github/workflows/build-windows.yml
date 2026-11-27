@@ -1,0 +1,51 @@
+name: Build Windows Installer & Portable (x64 + ia32)
+
+on:
+  push:
+    paths:
+      - 'windows/**'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        working-directory: windows
+        run: npm install --no-audit --no-fund
+
+      - name: Download Xray, sing-box & Aether binaries into core/
+        working-directory: windows
+        run: |
+          New-Item -ItemType Directory -Force -Path core, tmp_dl | Out-Null
+          curl.exe -sSL -o tmp_dl/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v26.9.9/Xray-windows-64.zip"
+          Expand-Archive tmp_dl/xray.zip -DestinationPath tmp_dl/xray -Force
+          Copy-Item tmp_dl/xray/xray.exe, tmp_dl/xray/geoip.dat, tmp_dl/xray/geosite.dat core/ -Force
+
+          curl.exe -sSL -o tmp_dl/sb.zip "https://github.com/SagerNet/sing-box/releases/download/v1.14.0/sing-box-1.14.0-windows-amd64.zip"
+          Expand-Archive tmp_dl/sb.zip -DestinationPath tmp_dl/sb -Force
+          Get-ChildItem tmp_dl/sb -Recurse -Include sing-box.exe,libcronet.dll | Copy-Item -Destination core/ -Force
+
+          curl.exe -sSL -o tmp_dl/ae.zip "https://github.com/CluvexStudio/Aether/releases/latest/download/aether-windows-x86_64.zip"
+          Expand-Archive tmp_dl/ae.zip -DestinationPath tmp_dl/ae -Force
+          Get-ChildItem tmp_dl/ae -Recurse -Include aether.exe | Copy-Item -Destination core/ -Force
+          Remove-Item -Recurse -Force tmp_dl
+
+      - name: Build Windows Setup & Portable EXE (x64 & ia32)
+        working-directory: windows
+        run: npm run build
+
+      - name: Upload Windows Installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: MLMVPN-Sovereign-Windows-EXE
+          path: |
+            windows/dist/*.exe
