@@ -1,0 +1,104 @@
+name: Publish Organized Sovereign Release (v2.0.0)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag'
+        required: true
+        default: 'v2.0.0'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch verified artifacts for Android, Windows & iOS
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p staging release_assets
+          echo "Downloading Android APKs (15201645803)..."
+          gh api "/repos/${{ github.repository }}/actions/artifacts/15201645803/zip" > staging/android.zip
+          unzip -q staging/android.zip -d staging/android
+
+          echo "Downloading Windows Installers (15194711783)..."
+          gh api "/repos/${{ github.repository }}/actions/artifacts/15194711783/zip" > staging/windows.zip
+          unzip -q staging/windows.zip -d staging/windows
+
+          echo "Downloading iOS IPA (15194726863)..."
+          gh api "/repos/${{ github.repository }}/actions/artifacts/15194726863/zip" > staging/ios.zip
+          unzip -q staging/ios.zip -d staging/ios
+
+          TAG="${{ github.event.inputs.tag || 'v2.0.0' }}"
+
+          # 1. Organize Android APKs (ARM64, ARMv7, Universal)
+          for f in staging/android/*.apk; do
+            base="$(basename "$f")"
+            case "$base" in
+              *arm64-v8a*)   cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Android-arm64-v8a.apk" ;;
+              *armeabi-v7a*) cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Android-armeabi-v7a.apk" ;;
+              *universal*)   cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Android-universal.apk" ;;
+              *)             cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Android-${base}" ;;
+            esac
+          done
+
+          # 2. Organize Windows Setup & Portable EXE (x64 & ia32)
+          for f in staging/windows/*.exe; do
+            base="$(basename "$f")"
+            case "$base" in
+              *Setup*x64*)    cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Windows-Setup-x64.exe" ;;
+              *Setup*ia32*)   cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Windows-Setup-ia32.exe" ;;
+              *Portable*x64*) cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Windows-Portable-x64.exe" ;;
+              *Portable*ia32*) cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-Windows-Portable-ia32.exe" ;;
+              *)              cp "$f" "release_assets/$base" ;;
+            esac
+          done
+
+          # 3. Organize iOS IPA
+          for f in staging/ios/*.ipa; do
+            cp "$f" "release_assets/MLMVPN-Sovereign-${TAG}-iOS-unsigned.ipa"
+          done
+
+          # 4. Generate SHA256SUMS.txt
+          (cd release_assets && sha256sum * > SHA256SUMS.txt)
+          ls -lh release_assets/
+
+      - name: Create or update GitHub Release with organized assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ github.event.inputs.tag || 'v2.0.0' }}"
+          cat << 'EOF' > notes.md
+          # MLMVPN Sovereign Suite (Windows • Android • iOS)
+
+          نسخه یکپارچه و شخصی‌سازی‌شده با تم **Warm Velvet Rose & Amber**، **سپر کلودفلر بدون فیلترشکن**، مخازن سرور چندپروتکلی و **همگام‌سازی رمزنگاری‌شده بین دستگاه‌ها (`mlmsync://v1/`)**.
+
+          ---
+
+          ### Android (امضاشده Release)
+          - **`Android-arm64-v8a.apk`** ← مخصوص گوشی‌های جدید ۶۴ بیتی (پیشنهادی برای اکثر گوشی‌ها)
+          - **`Android-armeabi-v7a.apk`** ← مخصوص گوشی‌ها و دستگاه‌های ۳۲ بیتی قدیمی‌تر
+          - **`Android-universal.apk`** ← نسخه همگانی (هر دو معماری در یک فایل)
+
+          ### Windows (`x64` و `ia32` همراه با Xray، sing-box و Aether)
+          - **`Windows-Setup-x64.exe`** ← فایل نصاب ۶۴ بیتی ویندوز ۱۰/۱۱ (پیشنهادی)
+          - **`Windows-Portable-x64.exe`** ← نسخه پورتابل ۶۴ بیتی بدون نیاز به نصب
+          - **`Windows-Setup-ia32.exe`** / **`Windows-Portable-ia32.exe`** ← نسخه ۳۲ بیتی
+
+          ### iOS (آیفون و آیپد)
+          - **`iOS-unsigned.ipa`** ← آماده نصب با Sideloadly / AltStore / Xcode
+
+          ### امنیت و بررسی صحت فایل‌ها
+          - **`SHA256SUMS.txt`** ← چک‌سام SHA-256 تمام فایل‌های منتشرشده
+          EOF
+
+          if gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release upload "$TAG" release_assets/* --repo "${{ github.repository }}" --clobber
+            gh release edit "$TAG" --repo "${{ github.repository }}" --notes-file notes.md --title "MLMVPN Sovereign Suite ${TAG}"
+          else
+            gh release create "$TAG" release_assets/* --repo "${{ github.repository }}" --title "MLMVPN Sovereign Suite ${TAG}" --notes-file notes.md --latest
+          fi
