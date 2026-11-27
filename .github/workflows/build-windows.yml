@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Windows Setup & Portable EXE (x64 & ia32)
         working-directory: windows
-        run: npm run build
+        run: npx electron-builder --win --publish never
 
       - name: Upload Windows Installers
         uses: actions/upload-artifact@v4
